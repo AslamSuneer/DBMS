@@ -1,0 +1,322 @@
+
+
+SQL> create table CUSTOMER(cust_no varchar(15) not null primary key, name varchar(15) not null,age int not null, city varchar(15) not null, pincode int not null, state varchar(15) not null);
+SQL> INSERT INTO CUSTOMER VALUES('C00001','Ivan Bayross',35,'Bombay',400054,'Maharashtra') ;
+SQL> INSERT INTO CUSTOMER VALUES('C00002','Vandana Saitwal',35,'Madras',780001,'Tamil Nadu');
+SQL> INSERT INTO CUSTOMER VALUES('C00003','Pramada Jaguste',55,'Bombay',400057,'Maharashtra');
+SQL> INSERT INTO CUSTOMER VALUES('C00004','Basu Navindagi',45,'Bombay',400056,'Maharashtra');
+SQL> INSERT INTO CUSTOMER VALUES('C00005','Ravi Sreedharan',25,'Delhi',100001,'Delhi');
+SQL> INSERT INTO CUSTOMER VALUES('C00006','Rukmini',25,'Madras',780001,'Tamil Nadu');
+
+SQL> select * from customer;
+CUST_NO 	NAME		       AGE CITY 	      PINCODE STATE
+--------------- --------------- ---------- --------------- ---------- ---------------
+C00001		Ivan Bayross		35 Bombay	       400054 Maharashtra
+C00002		Vandana Saitwal 	35 Madras	       780001 Tamil Nadu
+C00003		Pramada Jaguste 	55 Bombay	       400057 Maharashtra
+C00004		Basu Navindagi		45 Bombay	       400056 Maharashtra
+C00005		Ravi Sreedharan 	25 Delhi	       100001 Delhi
+C00006		Rukmini 		25 Madras	       780001 Tamil Nadu
+
+6 rows selected.
+
+SQL> create table SUPPLIER(s_no varchar(15) not null primary key, sname varchar(15) not null,age int not null, city varchar(15) not null);
+SQL> INSERT INTO SUPPLIER VALUES('S001','Ivan Bayross',35,'Bombay');
+SQL> INSERT INTO SUPPLIER VALUES('S002','Nirmala Agarwal',35,'Madras');
+SQL> INSERT INTO SUPPLIER VALUES('C003','Sushmita',55,'Bombay');
+SQL> INSERT INTO SUPPLIER VALUES('C004','Basu Navindgi',45,'Bombay');
+SQL> INSERT INTO SUPPLIER VALUES('C005','Ravi Sreedharan',25,'Delhi');
+SQL> INSERT INTO SUPPLIER VALUES('C006','Nanda Gopal',25,'Madras');
+
+SQL> select * from supplier;
+
+S_NO		SNAME		       AGE CITY
+--------------- --------------- ---------- ---------------
+S001		Ivan Bayross		35 Bombay
+S002		Nirmala Agarwal 	35 Madras
+C003		Sushmita		55 Bombay
+C004		Basu Navindgi		45 Bombay
+C005		Ravi Sreedharan 	25 Delhi
+C006		Nanda Gopal		25 Madras
+
+6 rows selected.
+
+SQL> create table PRODUCT(product_no varchar(15) not null primary key, description varchar(15) not null,company varchar(15) not null, price int not null);
+SQL> INSERT INTO PRODUCT VALUES('P00001','12W FloodLight','Wipro',5000);
+SQL> INSERT INTO PRODUCT VALUES('P00002','Laptop Adapter','Dell',1500);
+SQL> INSERT INTO PRODUCT VALUES('P00003','Tablet','HCL',11000);
+SQL> INSERT INTO PRODUCT VALUES('P00004','Ganet 50W LED','Wipro',999);
+SQL> INSERT INTO PRODUCT VALUES('P00005','Laptop Charger','HCL',1690);
+SQL> select * from product;
+
+PRODUCT_NO	DESCRIPTION	COMPANY 	     PRICE
+--------------- --------------- --------------- ----------
+P00001		12W FloodLight	Wipro		      5000
+P00002		Laptop Adapter	Dell		      1500
+P00003		Tablet		HCL		     11000
+P00004		Ganet 50W LED	Wipro		       999
+P00005		Laptop Charger	HCL		      1690
+
+SQL> CREATE TABLE PURCHASE1(ORDER_NO VARCHAR(6) NOT NULL PRIMARY KEY, CUST_NO VARCHAR(15) NOT NULL, PROD_NO VARCHAR(10) NOT NULL, QUANTITY INT NOT NULL, ORDER_DATE DATE, FOREIGN KEY(CUST_NO) REFERENCES CUSTOMER(CUST_NO), FOREIGN KEY(PROD_NO) REFERENCES PRODUCT(PRODUCT_NO));
+
+SQL> INSERT INTO PURCHASE1 VALUES('O00001','C00002','P00003',2,'20-JAN-16');
+SQL> INSERT INTO PURCHASE1 VALUES('O00002','C00003','P00002',1,'27-JAN-16');
+SQL> INSERT INTO PURCHASE1 VALUES('O00003','C00004','P00002',3,'28-JAN-16');
+SQL> INSERT INTO PURCHASE1 VALUES('O00004','C00006','P00001',3,'20-FEB-16');
+SQL> INSERT INTO PURCHASE1 VALUES('O00005','C00003','P00005',4,'07-APR-16');
+SQL> INSERT INTO PURCHASE1 VALUES('O00006','C00004','P00002',2,'22-MAY-16');
+SQL> INSERT INTO PURCHASE1 VALUES('O00007','C00005','P00004',1,'26-MAY-16');
+SQL> SELECT * FROM PURCHASE1;
+
+ORDER_ CUST_NO	       PROD_NO	    QUANTITY ORDER_DATE
+------ --------------- ---------- ---------- ------------------
+O00001 C00002	       P00003		   2 20-JAN-16
+O00002 C00003	       P00002		   1 27-JAN-16
+O00003 C00004	       P00002		   3 28-JAN-16
+O00004 C00006	       P00001		   3 20-FEB-16
+O00005 C00003	       P00005		   4 07-APR-16
+O00006 C00004	       P00002		   2 22-MAY-16
+O00007 C00005	       P00004		   1 26-MAY-16
+
+NESTED QUERIES:
+
+1) List customer numbers of all who purchased the product 'Laptop Adapter' during January.
+
+SQL> SELECT DISTINCT CUST_NO 
+FROM PURCHASE1 
+WHERE PROD_NO='P00002'
+AND ORDER_DATE BETWEEN '01-JAN-16' AND '31-JAN-16';
+
+CUST_NO
+-----------
+C00003
+C00004
+
+
+2) Get customer names of all who purchased P00002.
+
+SQL>SELECT DISTINCT C.name 
+FROM CUSTOMER C 
+WHERE C.CUST_NO IN (
+    SELECT P.CUST_NO 
+    FROM PURCHASE1 P 
+    WHERE P.PROD_NO = 'P00002'
+);
+
+NAME
+---------------
+Pramada Jaguste
+Basu Navindagi
+
+
+3) List customer numbers of all who have purchased products with cost more than Rs 1600.
+
+SQL> SELECT DISTINCT P.CUST_NO 
+FROM PURCHASE1 P 
+JOIN PRODUCT R ON P.PROD_NO = R.PRODUCT_NO 
+WHERE R.PRICE > 1600; 
+
+CUST_NO
+---------------
+C00003
+C00006
+C00002
+
+4)List custmer names of all who purchased products with cost more than 1500 during January.
+
+SQL>SELECT DISTINCT C.name 
+FROM CUSTOMER C 
+WHERE C.CUST_NO IN (
+    SELECT P.CUST_NO 
+    FROM PURCHASE1 P 
+    JOIN PRODUCT R ON P.PROD_NO = R.PRODUCT_NO
+    WHERE R.PRICE > 1500 
+      AND P.ORDER_DATE BETWEEN '01-JAN-16' AND '31-JAN-16');
+      
+NAME
+---------------
+Vandana Saitwal
+
+
+
+5) List customer numbers of all who have purchased products with cost less than Rs 1600.
+
+SQL>SELECT DISTINCT P.CUST_NO 
+FROM PURCHASE1 P 
+JOIN PRODUCT R ON P.PROD_NO = R.PRODUCT_NO 
+WHERE R.PRICE < 1600; 
+
+CUST_NO
+---------------
+C00003
+C00004
+C00005
+
+6)Get customer numbers of purchases such that the quantity is more than the maximum quantity of all purchases of C00002.
+
+SQL>SELECT P.CUST_NO 
+FROM PURCHASE1 P 
+WHERE P.QUANTITY> 
+  (SELECT MAX(QUANTITY)
+  FROM PURCHASE1 
+  WHERE CUST_NO='C00002');
+CUST_NO
+---------------
+C00004
+C00006
+C00003
+
+7)Get the names of all the customers who have not purchased any item currently.
+
+SQL>SELECT C.NAME 
+FROM CUSTOMER C 
+WHERE C.CUST_NO NOT IN(
+  SELECT DISTINCT CUST_NO
+  FROM PURCHASE1 );
+  
+NAME
+---------------
+Ivan Bayross
+
+8)Get the names of all customers who have purchased at least one item from Wipro.
+
+SQL>SELECT C.NAME 
+FROM CUSTOMER C 
+WHERE CUST_NO IN (
+   SELECT P.CUST_NO
+   FROM PURCHASE1 P JOIN PRODUCT R ON R.PRODUCT_NO=P.PROD_NO
+   WHERE R.COMPANY='Wipro');
+   
+NAME
+---------------
+Ravi Sreedharan
+Rukmini
+
+
+CO RELATED QUERIES:
+
+1)List all customer-number pairs such that the cost of the item purchased by the first customer is less than that of the second customer.
+
+SQL>SELECT DISTINCT P1.CUST_NO, P2.CUST_NO 
+FROM PURCHASE1 P1, PURCHASE1 P2 
+WHERE P1.PROD_NO<> P2.PROD_NO
+  AND P1.CUST_NO <> P2.CUST_NO 
+  AND (SELECT price FROM PRODUCT WHERE PRODUCT_NO = P1.PROD_NO) 
+  < (SELECT price FROM PRODUCT WHERE PRODUCT_NO= P2.PROD_NO);
+  
+CUST_NO 	CUST_NO
+--------------- ---------------
+C00006		C00002
+C00004		C00003
+C00004		C00002
+C00005		C00002
+C00005		C00003
+C00003		C00006
+C00005		C00006
+C00005		C00004
+C00004		C00006
+C00003		C00002
+
+10 rows selected.
+
+
+2)List pairs of customer names of all who have purchased products with cost less than Rs 1600.
+
+SQL>SELECT C1.NAME, C2.NAME 
+FROM CUSTOMER C1, CUSTOMER C2 
+WHERE C1.CUST_NO<> C2.CUST_NO 
+  AND EXISTS (
+      SELECT 1 
+      FROM PURCHASE1 P1, PURCHASE1 P2, PRODUCT R1, PRODUCT R2 
+      WHERE P1.CUST_NO = C1.CUST_NO
+        AND P2.CUST_NO = C2.CUST_NO
+        AND P1.PROD_NO = R1.PRODUCT_NO 
+        AND P2.PROD_NO =R2.PRODUCT_NO
+        AND R1.PRICE<1600
+        AND R2.PRICE<1600
+        );
+        
+NAME		NAME
+--------------- ---------------
+Ravi Sreedharan Pramada Jaguste
+Basu Navindagi	Pramada Jaguste
+Pramada Jaguste Basu Navindagi
+Ravi Sreedharan Basu Navindagi
+Pramada Jaguste Ravi Sreedharan
+Basu Navindagi	Ravi Sreedharan
+
+6 rows selected.
+
+3)Get product numbers of all products purchased by more than one customer.
+
+SQL>SELECT DISTINCT P1.PROD_NO 
+FROM PURCHASE1 P1 
+WHERE EXISTS (
+    SELECT 1 
+    FROM PURCHASE1 P2 
+    WHERE P1.PROD_NO = P2.PROD_NO 
+      AND P1.CUST_NO <> P2.CUST_NO
+);
+
+PROD_NO
+----------
+P00002
+P00002
+P00002
+
+4)Get the names of customers who have purchased the item P00002.
+
+SQL>SELECT DISTINCT C.name 
+FROM CUSTOMER C 
+WHERE EXISTS (
+    SELECT 1 
+    FROM PURCHASE1 P 
+    WHERE P.CUST_NO = C.CUST_NO
+      AND P.PROD_NO = 'P00002'
+);
+
+NAME
+---------------
+Pramada Jaguste
+Basu Navindagi
+
+5)  Get the names of customers who have not purchased the item P00002.
+
+SQL>SELECT C.NAME 
+FROM CUSTOMER C 
+WHERE NOT EXISTS(
+ SELECT 1
+ FROM PURCHASE1 P
+ WHERE P.CUST_NO = C.CUST_NO
+  AND P.PROD_NO ='P00002');
+  
+NAME
+---------------
+Vandana Saitwal
+Rukmini
+Ravi Sreedharan
+Ivan Bayross
+
+6)Get the names of customers who have purchased at least all those products purchased by C00004.
+
+SQL>SELECT DISTINCT C1.name 
+FROM CUSTOMER C1 
+WHERE NOT EXISTS (
+    SELECT P2.PROD_NO 
+    FROM PURCHASE1 P2 
+    WHERE P2.CUST_NO = 'C00004' 
+      AND NOT EXISTS (
+          SELECT 1 
+          FROM PURCHASE1 P1 
+          WHERE P1.CUST_NO = C1.CUST_NO
+            AND P1.PROD_NO = P2.PROD_NO
+      )
+);
+
+NAME
+---------------
+Pramada Jaguste
+Basu Navindagi
+
+
+
