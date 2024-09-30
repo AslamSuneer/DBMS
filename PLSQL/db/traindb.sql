@@ -1,4 +1,4 @@
-CREATE TABLE Train(TNO INT generated.always as identity(start with 1 increment by 1),Tname VARCHAR(20),TDate DATE,Destination VARCHAR(20),SEATS INT);
+CREATE TABLE Train(TNO INT generated.always as identity(start with 1 increment by 1)primary key,Tname VARCHAR(20),TDate DATE,Destination VARCHAR(20),Seats INT);
 
 INSERT INTO Train(Tname,TDate,Destination,SEATS)VALUES('express1','16-apr-2024','mumbai',300);
 INSERT INTO Train(Tname,TDate,Destination,SEATS)VALUES('express2','16-apr-2024','chennai',250);
