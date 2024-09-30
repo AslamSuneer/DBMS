@@ -1,6 +1,5 @@
 -- Create the Student table
-CREATE TABLE Student (Sid INT PRIMARY KEY,name VARCHAR(50),Subj1 INT,Subj2 INT,Subj3 INT,Total INT DEFAULT 0,Avg DECIMAL(5, 2) DEFAULT 0.00
-);
+CREATE TABLE Student (Sid INT PRIMARY KEY,name VARCHAR(50),Subj1 INT,Subj2 INT,Subj3 INT,Total INT,Avg DECIMAL(5, 2));
 
 CREATE OR REPLACE TRIGGER calculate_total_avg
 BEFORE INSERT ON Student
