@@ -44,9 +44,7 @@ BEGIN
     SET Seats = Seats + p_seats_cancel
     WHERE TNO = p_train_number;
 
-    v_rows_updated := SQL%ROWCOUNT; -- Get the number of rows updated
-
-    IF v_rows_updated > 0 THEN
+    
         -- Commit the transaction
         COMMIT;
         DBMS_OUTPUT.PUT_LINE(p_seats_cancel || ' seat(s) cancelled successfully.');
