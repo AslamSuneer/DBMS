@@ -6,14 +6,13 @@ BEFORE INSERT ON Student
 FOR EACH ROW
 BEGIN
     -- Calculate the total of the marks for Subj1, Subj2, and Subj3
-    --:NEW.Total := :NEW.Subj1 + :NEW.Subj2 + :NEW.Subj3;
+    :NEW.Total := :NEW.Subj1 + :NEW.Subj2 + :NEW.Subj3;
     
     -- Calculate the average of the marks
-   -- :NEW.Avg := :NEW.Total / 3;
-    SET NEW.Total = NEW.Subj1 + NEW.Subj2 + NEW.Subj3;
-    SET NEW.Avg = (NEW.Subj1 + NEW.Subj2 + NEW.Subj3) / 3;
+    :NEW.Avg := :NEW.Total / 3;
 END;
-
+/
+    
 INSERT INTO Student (Sid, name, Subj1, Subj2, Subj3) 
 VALUES (1, 'John Doe', 80, 90, 85);
 INSERT INTO Student (Sid, name, Subj1, Subj2, Subj3) 
