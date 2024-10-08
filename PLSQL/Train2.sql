@@ -55,7 +55,7 @@ EXCEPTION
 END CancelTicket;
 /
 
-main program
+main program(Separate file)
 -----------------------
 SET SERVEROUTPUT ON;
 
@@ -81,7 +81,7 @@ END;
 /
 
 
-tables
+TABLES CREATION:
 ----------
 
 CREATE TABLE Train (
