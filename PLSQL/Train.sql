@@ -44,8 +44,8 @@ BEGIN
     SET Seats = Seats + p_seats_cancel
     WHERE TNO = p_train_number;
 
-    
-        -- Commit the transaction
+    IF SQL%ROWCOUNT > 0 THEN
+        -- Commit the transaction if rows were updated
         COMMIT;
         DBMS_OUTPUT.PUT_LINE(p_seats_cancel || ' seat(s) cancelled successfully.');
     ELSE
@@ -57,9 +57,11 @@ EXCEPTION
 END CancelTicket;
 /
 
--- Display menu
+-- Display Menu
+SET SERVEROUTPUT ON;
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('1. TICKET RESERVATION 2. TICKET CANCELLATION');
+    DBMS_OUTPUT.PUT_LINE('1. TICKET RESERVATION');
+    DBMS_OUTPUT.PUT_LINE('2. TICKET CANCELLATION');
 END;
 /
 
