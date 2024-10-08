@@ -60,10 +60,10 @@ DECLARE
     v_emp_id_for_deletion INT := &employee_id_for_deletion;  -- Prompt for employee ID to delete
 BEGIN
     -- Add employees
-    Employee_Package.Add_Employee(1, 'Alice Johnson', '101 Maple St', 55000);
-    Employee_Package.Add_Employee(2, 'Bob Smith', '202 Oak St', 60000);
-    Employee_Package.Add_Employee(3, 'Charlie Brown', '303 Pine St', 50000);
-    
+    Employee_Package.Add_Employee(1, 'Adam Smith', '40 PBVR', 65000);
+    Employee_Package.Add_Employee(2, 'Yash J', '63 ANG', 70000);
+    Employee_Package.Add_Employee(3, 'Chales B', '44 KTMGM', 60000);
+    Employee_Package.Add_Employee(4, 'Celvin Kelvin', '17 MVPZ', 80000);
     -- List all employees
     Employee_Package.List_Employees;
     
