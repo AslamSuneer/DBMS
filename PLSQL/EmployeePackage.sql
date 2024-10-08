@@ -1,25 +1,3 @@
-TABLE
--------------
-CREATE TABLE Employee (
-    Eid INT PRIMARY KEY,               -- No auto-increment, must be provided manually
-    Ename VARCHAR(50),
-    Eaddress VARCHAR(100),
-    Esalary DECIMAL(10, 2)
-);
-
-PACKAGE
-----------
-CREATE OR REPLACE PACKAGE Employee_Package AS
-    PROCEDURE Add_Employee(p_Eid IN INT, p_Ename IN VARCHAR2, p_Eaddress IN VARCHAR2, p_Esalary IN DECIMAL);
-    PROCEDURE Delete_Employee(p_Eid IN INT);
-    PROCEDURE List_Employees;
-    FUNCTION Get_Salary(p_Eid IN INT) RETURN DECIMAL;
-END Employee_Package;
-/
-
-
-PACKAGE BODY
-----------------
 CREATE OR REPLACE PACKAGE BODY Employee_Package AS
 
     -- Add an employee
@@ -69,7 +47,9 @@ CREATE OR REPLACE PACKAGE BODY Employee_Package AS
 END Employee_Package;
 /
 
-MAIN PROGRAM
+------------------------
+------------------------
+EmployeePackageMain.sql
 ------------------------
 
 SET SERVEROUTPUT ON;
