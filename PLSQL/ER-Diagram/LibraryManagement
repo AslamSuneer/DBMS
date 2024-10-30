@@ -1,0 +1,82 @@
+TABLE DESIGN
+CREATION
+AUTHOR
+CREATE TABLE Author(
+Author_id int primary key,
+Name varchar(25) not null,
+Email varchar(255),
+Phone_number varchar(15),
+Status varchar(50)
+);
+PUBLISHER
+CREATE TABLE Publisher(
+Publisher_id int primary key,
+Name varchar(255) not null,
+Address varchar(255)
+);
+MEMBER
+CREATE TABLE MEMBER(
+Member_id int primary key,
+Name varchar(255) not null,
+Branch_code varchar(50),
+Roll_number varchar(50),
+Phone_number varchar(15),
+Email_id varchar(255),
+Date_of_Join DATE,
+Status varchar(50)
+);
+
+LANGUAGE
+CREATE TABLE LANGUAGE(
+Language_Id int primary key,
+Name varchar(100)
+);
+LATE_FEE_RULE
+CREATE TABLE Late_fee_rule(
+FromDays int,
+ToDays int,
+Amount decimal(10,2),
+Primary key (FromDays,ToDays)
+);
+BOOK
+CREATE TABLE BOOK(
+Book_id int primary key,
+Title varchar(255) not null,
+Language_id int,
+MRP DECIMAL(10,2)
+Publisher_id INT,
+Published_date date,
+Volume INT,
+Status varchar(50),
+FOREIGN KEY (Language_id) REFERENCES Language(Language_Id),
+FOREIGN KEY (Publisher_id) REFERENCES Publisher(Publisher_id)
+);
+
+BOOK-AUTHOR RELATION
+CREATE TABLE Book_Author(
+Book_id int,
+Author_id int,
+PRIMARY KEY(Book_id,Author_id)
+FOREIGN KEY(Book_id) REFERENCES Book(Book_Id),
+FOREIGN KEY(Author_id) REFERENCES Author(Author_Id)
+):
+
+BOOK_ISSUE
+CREATE TABLE Book_Issue(
+Issue_Id INT PRIMARY KEY,
+Date_Of_Issue Date,
+Book_id int,
+Member_id int,
+Expected_date_of_return date,
+Status varchar(50),
+FOREIGN KEY(Book_id) REFERENCES Book(Book_Id),
+FOREIGN KEY(Member_id)REFERENCES Member(Member_id)
+);
+BOOK_RETURN
+CREATE TABLE Book_return(
+Issue_id int primary key,
+Actual_date_of_return date,
+Latedays int,
+Latefee decimal(10,2),
+FOREIGN KEY(Issue_id) REFERENCES Book_Issue(Issue_Id)
+);
