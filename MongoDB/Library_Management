@@ -1,0 +1,52 @@
+use LibraryDB; // Switch to or create the LibraryDB database
+db.createCollection("author"); // Create an author collection
+db.createCollection("book");   // Create a book collection
+db.createCollection("reader"); // Create a reader collection
+show collections
+
+CREATE:
+db.author.insertOne({
+  "Author_id": 1,
+  "Name": "John Smith",
+  "Email": "john.smith@example.com",
+  "Phone_number": "1234567890",
+  "Status": "Active"
+});
+
+db.reader.insertOne({
+  "Reader_id": 501,
+  "Name": "Jane Doe",
+  "Phone_number": "9876543210",
+  "Email": "jane.doe@example.com",
+  "Membership_date": new Date("2021-05-15"),
+  "Status": "Active"
+});
+
+db.book.insertOne({
+  "Book_id": 101,
+  "Title": "Introduction to MongoDB",
+  "Author_id": 1,
+  "Language": "English",
+  "Published_date": new Date("2022-01-01"),
+  "Status": "Available"
+});
+
+Read:
+db.book.find();
+db.author.find({ "Author_id": 1 });
+db.reader.find();
+
+Update:
+db.author.updateOne(
+  { "Author_id": 1 },
+  { $set: { "Email": "john.updated@example.com" } }
+);
+
+db.book.updateOne(
+  { "Book_id": 101 },
+  { $set: { "Status": "Checked Out" } }
+);
+
+Delete:
+db.author.deleteOne({ "Author_id": 1 });
+db.reader.deleteOne({ "Reader_id": 501 });
