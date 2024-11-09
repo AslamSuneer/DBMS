@@ -1,0 +1,68 @@
+TABLE CREATION
+-- Creating the EMP_TABLE (Employee Table)
+CREATE TABLE EMP_TABLE (
+    empid INT PRIMARY KEY,
+    name VARCHAR(100),
+    deptid INT,
+    salary DECIMAL(10, 2)
+);
+
+-- Creating the DEPT_TABLE (Department Table)
+CREATE TABLE DEPT_TABLE (
+    deptid INT PRIMARY KEY,
+    dname VARCHAR(100),
+    dlocation VARCHAR(100),
+    mgrid INT,  -- empid of the manager
+    FOREIGN KEY (mgrid) REFERENCES EMP_TABLE(empid)  -- Linking the manager to the employee table
+);
+
+-- Creating the TAX_TABLE (Tax Table)
+CREATE TABLE TAX_TABLE (
+    eid INT,  -- empid (employee ID)
+    deptid INT,  -- deptid (department ID)
+    tax DECIMAL(10, 2),
+    PRIMARY KEY (eid, deptid),
+    FOREIGN KEY (eid) REFERENCES EMP_TABLE(empid),  -- Linking employee ID
+    FOREIGN KEY (deptid) REFERENCES DEPT_TABLE(deptid)  -- Linking department ID
+);
+
+INSERTION
+-- Inserting data into EMP_TABLE
+INSERT INTO EMP_TABLE (empid, name, deptid, salary) VALUES
+(1, 'Alice', 101, 60000),
+(2, 'Bob', 102, 50000),
+(3, 'Charlie', 101, 70000),
+(4, 'David', 103, 80000),
+(5, 'Eve', 102, 75000),
+(6, 'Frank', 103, 90000);
+
+-- Inserting data into DEPT_TABLE
+INSERT INTO DEPT_TABLE (deptid, dname, dlocation, mgrid) VALUES
+(101, 'Computer Science', 'Building A', 1),
+(102, 'Electrical Engineering', 'Building B', 2),
+(103, 'Mechanical Engineering', 'Building C', 4);
+
+-- Inserting data into TAX_TABLE
+INSERT INTO TAX_TABLE (eid, deptid, tax) VALUES
+(1, 101, 3000),
+(2, 102, 2000),
+(3, 101, 3500),
+(4, 103, 4000),
+(5, 102, 2500),
+(6, 103, 4500);
+SQL Queries
+i) Display the total tax paid by employees of the Computer Science department
+SELECT SUM(t.tax) AS total_tax
+FROM EMP_TABLE e
+JOIN DEPT_TABLE d ON e.deptid = d.deptid
+JOIN TAX_TABLE t ON e.empid = t.eid
+WHERE d.dname = 'Computer Science';
+ii) Display department name and manager name of each department
+SELECT d.dname AS department_name, e.name AS manager_name
+FROM DEPT_TABLE d
+JOIN EMP_TABLE e ON d.mgrid = e.empid;
+iii) Display employee names who are not managers and whose names start with 'E'
+SELECT name
+FROM EMP_TABLE
+WHERE name LIKE 'E%' 
+AND empid NOT IN (SELECT mgrid FROM DEPT_TABLE);
