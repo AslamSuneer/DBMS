@@ -105,7 +105,6 @@ Total Revenue for the Current Month: 24000
 Number of Unique Guests Checked Out: 3
 PL/SQL procedure successfully completed.
 
-SQL> set linesize 550;
 SQL> select *from history;
 
 NAME                                                                                                 CHECK_OUT
