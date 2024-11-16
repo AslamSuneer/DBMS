@@ -1,3 +1,4 @@
+---------------------------------------
 TABLE CREATION:
 CREATE TABLE GUEST (
     Name VARCHAR2(100),
@@ -21,7 +22,7 @@ CREATE TABLE HISTORY (
     Name VARCHAR2(100),
     Check_out_date DATE
 );
-
+-----------------------------------------
 INSERTION:
 INSERT INTO GUEST (Name, Address, RoomNo, Check_in_date, Check_out_date)
 VALUES ('John Doe', '123 Main St, Springfield', 101, TO_DATE('2024-11-15', 'YYYY-MM-DD'), TO_DATE('2024-11-20', 'YYYY-MM-DD'));
@@ -40,7 +41,7 @@ VALUES (102, 2000);
 
 INSERT INTO ROOM (RoomNo, Charge_per_day)
 VALUES (103, 2500);
-
+-----------------------------------------------------------------------------------------------------------------------------------------------
 room.sql:
 CREATE OR REPLACE PROCEDURE GenerateBillAndReport IS
     v_BillAmount NUMBER;
@@ -88,10 +89,13 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('An error occurred: ' || SQLERRM);
 END;
 /
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 SQL> @c:\plsql\room.sql
 Procedure created.
-
+--------------------------------------------------------------------------------------
+    OUTPUT:-
+--------------------------------------------------------------------------------------
 
 SQL> SET SERVEROUTPUT ON;
 SQL> EXEC GenerateBillAndReport;
