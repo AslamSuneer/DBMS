@@ -107,14 +107,14 @@ PL/SQL procedure successfully completed.
 
 SQL> select *from history;
 
-NAME                                                                                                 CHECK_OUT
----------------------------------------------------------------------------------------------------- ---------
-John Doe                                                                                             20-NOV-24
-Jane Smith                                                                                           18-NOV-24
-Alice Johnson                                                                                        19-NOV-24
-John Doe                                                                                             20-NOV-24
-Jane Smith                                                                                           18-NOV-24
-Alice Johnson                                                                                        19-NOV-24
+NAME                                                                             CHECK_OUT
+-------------------------------------------------------------------------------- ---------
+John Doe                                                                         20-NOV-24
+Jane Smith                                                                       18-NOV-24
+Alice Johnson                                                                    19-NOV-24
+John Doe                                                                         20-NOV-24
+Jane Smith                                                                       18-NOV-24
+Alice Johnson                                                                    19-NOV-24
 
 6 rows selected.
 
