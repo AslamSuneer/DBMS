@@ -134,3 +134,28 @@ Jane Smith                                                                      
 Alice Johnson                                                                                             12500
 
 6 rows selected.
+
+
+SQL_QUERIES:
+(i) Find all guests who stayed in rooms with a daily charge greater than a specified amount (e.g., 1000):
+SQL>SELECT G.Name
+FROM GUEST G
+JOIN ROOM R ON G.RoomNo = R.RoomNo
+WHERE R.CHARGE_PER_DAY > 1000;
+(ii) Find the room number with the maximum average bill amount:
+SQL>SELECT ROOMNO FROM (
+    SELECT G.RoomNo, AVG(B.Billamount) AS avg_bill
+    FROM GUEST G
+    JOIN BILL B ON G.Name = B.Name
+    GROUP BY G.RoomNo
+    ORDER BY avg_bill DESC
+)
+WHERE ROWNUM = 1;
+(iii) List rooms that have not been occupied in the last three months:
+SQL>SELECT R.RoomNo
+FROM ROOM R
+WHERE R.RoomNo NOT IN (
+    SELECT G.RoomNo
+    FROM GUEST G
+    WHERE G.check_in_date > ADD_MONTHS(SYSDATE, -3)
+);
