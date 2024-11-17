@@ -48,8 +48,45 @@ VALUES (2, 'Bob Smith', TO_DATE('2024-01-22', 'YYYY-MM-DD'));
 
 INSERT INTO MEMBERS (MemberID, Name, MembershipDate) 
 VALUES (3, 'Charlie Brown', TO_DATE('2022-11-30', 'YYYY-MM-DD'));
+-----------------------------------------------------------------------------------------------------------------
+SQL> select*from books;
 
+    BOOKID TITLE                                          AUTHOR                                            TOTALCOPIES AVAILABLECOPIES
+----------------------------------------------------------------------------------------------------- ---------------------------------
+         1 The Great Gatsby                              F. Scott Fitzgerald                                     5               5
+         2 1984                                          George Orwell                                           3               3
+         3 To Kill a Mockingbird                         Harper Lee                                              4               4
+         4 Moby Dick                                     Herman Melville                                         2               2
+         5 Pride and Prejudice                           Jane Austen                                             6               6
 
+-----------------------------------------------------------------------------------------------------------------------------------------
+SQL> ed c:\plsql\borrowtrigger.sql;
+
+CREATE OR REPLACE TRIGGER CheckAvailableCopies
+AFTER INSERT ON BORROW
+FOR EACH ROW
+DECLARE
+  v_available_copies NUMBER;
+BEGIN
+  -- Get the available copies for the borrowed book
+  SELECT AvailableCopies INTO v_available_copies
+  FROM BOOKS
+  WHERE BookID = :NEW.BookID;
+  
+  -- Check if available copies are greater than zero
+  IF v_available_copies > 0 THEN
+    -- Decrement the available copies in the BOOKS table
+    UPDATE BOOKS
+    SET AvailableCopies = AvailableCopies - 1
+    WHERE BookID = :NEW.BookID;
+  ELSE
+    -- Raise an exception if there are no available copies
+    RAISE_APPLICATION_ERROR(-20001, 'No available copies for this book');
+  END IF;
+END;
+/
+
+------------------------------------------------------------------------------------------------------------
 INSERT INTO BORROW (BorrowID, BookID, MemberID, BorrowDate, ReturnDate)
 VALUES (1, 1, 1, TO_DATE('2024-10-10', 'YYYY-MM-DD'), TO_DATE('2024-10-15', 'YYYY-MM-DD'));
 
@@ -64,7 +101,19 @@ VALUES (4, 4, 1, TO_DATE('2024-10-05', 'YYYY-MM-DD'), TO_DATE('2024-10-15', 'YYY
 
 INSERT INTO BORROW (BorrowID, BookID, MemberID, BorrowDate, ReturnDate)
 VALUES (5, 5, 2, TO_DATE('2024-09-10', 'YYYY-MM-DD'), TO_DATE('2024-09-20', 'YYYY-MM-DD'));
------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+
+SQL> select*from books;
+
+    BOOKID TITLE                           AUTHOR                               TOTALCOPIES AVAILABLECOPIES
+---------- -------------------------------------------------------------------------------------------------
+         1 The Great Gatsby                F. Scott Fitzgerald                      5               4
+         2 1984                            George Orwell                            3               2
+         3 To Kill a Mockingbird           Harper Lee                               4               3
+         4 Moby Dick                       Herman Melville                          2               1
+         5 Pride and Prejudice             Jane Austen                              6               5
+
+------------------------------------------------------------------------------------------------------------------------------
 borrow.sql
 CREATE OR REPLACE PROCEDURE CheckOverdueBooks IS
   CURSOR overdue_books_cursor IS
@@ -107,31 +156,7 @@ SQL> SELECT * FROM BORROW;
          4          4          1 05-OCT-24 15-OCT-24      65.25
          5          5          2 10-SEP-24 20-SEP-24     115.25
 
-SQL> ed c:\plsql\borrowtrigger.sql;
 
-CREATE OR REPLACE TRIGGER CheckAvailableCopies
-AFTER INSERT ON BORROW
-FOR EACH ROW
-DECLARE
-  v_available_copies NUMBER;
-BEGIN
-  -- Get the available copies for the borrowed book
-  SELECT AvailableCopies INTO v_available_copies
-  FROM BOOKS
-  WHERE BookID = :NEW.BookID;
-  
-  -- Check if available copies are greater than zero
-  IF v_available_copies > 0 THEN
-    -- Decrement the available copies in the BOOKS table
-    UPDATE BOOKS
-    SET AvailableCopies = AvailableCopies - 1
-    WHERE BookID = :NEW.BookID;
-  ELSE
-    -- Raise an exception if there are no available copies
-    RAISE_APPLICATION_ERROR(-20001, 'No available copies for this book');
-  END IF;
-END;
-/
 -------------------------------------------------------------------------------------------
 
 SQL_QUERIES:
