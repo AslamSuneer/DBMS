@@ -1,12 +1,12 @@
 
 
-SQL> create table CUSTOMER(cust_no varchar(15) not null primary key, name varchar(15) not null,age int not null, city varchar(15) not null, pincode int not null, state varchar(15) not null);
-SQL> INSERT INTO CUSTOMER VALUES('C00001','Ivan Bayross',35,'Bombay',400054,'Maharashtra') ;
-SQL> INSERT INTO CUSTOMER VALUES('C00002','Vandana Saitwal',35,'Madras',780001,'Tamil Nadu');
-SQL> INSERT INTO CUSTOMER VALUES('C00003','Pramada Jaguste',55,'Bombay',400057,'Maharashtra');
-SQL> INSERT INTO CUSTOMER VALUES('C00004','Basu Navindagi',45,'Bombay',400056,'Maharashtra');
-SQL> INSERT INTO CUSTOMER VALUES('C00005','Ravi Sreedharan',25,'Delhi',100001,'Delhi');
-SQL> INSERT INTO CUSTOMER VALUES('C00006','Rukmini',25,'Madras',780001,'Tamil Nadu');
+create table CUSTOMER(cust_no varchar(15) not null primary key, name varchar(15) not null,age int not null, city varchar(15) not null, pincode int not null, state varchar(15) not null);
+
+INSERT INTO CUSTOMER VALUES('C00001','Ivan Bayross',35,'Bombay',400054,'Maharashtra') ;
+INSERT INTO CUSTOMER VALUES('C00002','Vandana Saitwal',35,'Madras',780001,'Tamil Nadu');
+INSERT INTO CUSTOMER VALUES('C00003','Pramada Jaguste',55,'Bombay',400057,'Maharashtra');  INSERT INTO CUSTOMER VALUES('C00004','Basu Navindagi',45,'Bombay',400056,'Maharashtra');
+INSERT INTO CUSTOMER VALUES('C00005','Ravi Sreedharan',25,'Delhi',100001,'Delhi');
+INSERT INTO CUSTOMER VALUES('C00006','Rukmini',25,'Madras',780001,'Tamil Nadu');
 
 SQL> select * from customer;
 CUST_NO 	NAME		       AGE CITY 	      PINCODE STATE
